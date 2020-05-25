@@ -18,5 +18,12 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware(['member'])->group(function () {
+    Route::get('/home', 'Member\SearchController@index')->name('home');
+});
+
+Route::middleware(['admin'])->group(function () {
+    Route::get('/admin', 'Admin\SearchController@index')->name('admin');
+});
