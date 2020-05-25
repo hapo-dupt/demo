@@ -30,6 +30,6 @@ class Member extends Authenticatable
 
     public function info()
     {
-        return Auth::guard('member')->user();
+        return Auth::user();
     }
 }
