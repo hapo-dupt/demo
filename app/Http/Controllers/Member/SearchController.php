@@ -9,6 +9,6 @@ class SearchController extends Controller
 {
     public function index()
     {
-        return view('layouts.index');
+        return view('members.search.index');
     }
 }

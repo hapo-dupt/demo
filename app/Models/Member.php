@@ -14,8 +14,9 @@ class Member extends Authenticatable
     const STATUS_CLOSE = 0;
     const GENDER_MALE = 0;
     const GENDER_FEMALE = 1;
+    const ID = 0;
     protected $fillable = [
-        'username', 'password', 'role', 'full_name', 'email', 'image', 'gender', 'phone', 'address', 'status'
+        'email', 'password', 'role', 'name', 'image', 'gender', 'phone', 'address', 'active'
     ];
 
     public function projects()
