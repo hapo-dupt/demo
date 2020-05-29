@@ -39,12 +39,11 @@
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                             <div class="row">
-                                @foreach($contentProject['projectDetail'] as $time)
                                 <div class="col-12 col-sm-4">
                                     <div class="info-box bg-light">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center text-muted">Start Date</span>
-                                            <span class="info-box-number text-center text-muted mb-0">{{ date('H:i d-m-Y', strtotime($time->begin_at)) }}</span>
+                                            <span class="info-box-number text-center text-muted mb-0">{{ date('H:i d-m-Y', strtotime($contentProject['projectDetail']->begin_at)) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -52,11 +51,10 @@
                                     <div class="info-box bg-light">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center text-muted">End Date</span>
-                                            <span class="info-box-number text-center text-muted mb-0">{{ date('H:i d-m-Y', strtotime($time->finish_at)) }}</span>
+                                            <span class="info-box-number text-center text-muted mb-0">{{ date('H:i d-m-Y', strtotime($contentProject['projectDetail']->finish_at)) }}</span>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
                                 <div class="col-12 col-sm-4">
                                     <div class="info-box bg-light">
                                         <div class="info-box-content">
@@ -69,13 +67,12 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h4>Projects Details</h4>
-                                    @foreach($contentProject['projectDetail'] as $projectsData)
                                     <div class="post">
                                         <div class="mb-2">
                                             <strong>Title Project</strong>
                                         </div>
                                         <p>
-                                            {{ $projectsData->title }}
+                                            {{ $contentProject['projectDetail']->title }}
                                         </p>
                                     </div>
 
@@ -84,10 +81,9 @@
                                             <strong>Project Description</strong>
                                         </div>
                                         <p>
-                                            {{ $projectsData->description }}
+                                            {{ $contentProject['projectDetail']->description }}
                                         </p>
                                     </div>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -108,6 +104,12 @@
                                             </b>
                                         @endif
                                     @endforeach
+                                </p>
+                                </br>
+                                <p class="text-sm">
+                                    <a class="btn btn-primary text-white"
+                                       href="{{ route('tasks.show', $contentProject['projectDetail']->id) }}">List of Tasks</a>
+                                    <a class="btn btn-secondary text-white" href="{{ route('projects.index') }}">Back to Projects</a>
                                 </p>
                             </div>
                         </div>

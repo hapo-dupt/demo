@@ -8,6 +8,26 @@
                     <div class="col-sm-6">
                         <h1>Tasks Management</h1>
                     </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('tasks.index') }}">Select Projects</a></li>
+                            <li class="breadcrumb-item active">List Tasks</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid" id="taskDetail" style="display: none">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        View Tasks of Detail:
+                        <a class="float-right btn btn-danger text-white closeTask">Close</a>
+                    </div>
+                    <div class="card-body" id="div_task">
+                        <div class="post clearfix"></div>
+                    </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -27,12 +47,11 @@
                             @endif
 
                             <div class="card-body table-responsive p-0">
-                                <table class="table table-head-fixed text-nowrap">
+                                <table class="table table-head-fixed text-wrap">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Title</th>
-                                        <th>Description</th>
                                         <th>Start at</th>
                                         <th>Finish at</th>
                                         <th>Status</th>
@@ -44,7 +63,6 @@
                                         <tr>
                                             <td>{{ ++$orderId }}</td>
                                             <td>{{ $value->title }}</td>
-                                            <td>{{ $value->description }}</td>
                                             <td>{{ date('H:i d-m-Y', strtotime($value->begin_at)) }}</td>
                                             <td>{{ date('H:i d-m-Y', strtotime($value->finish_at)) }}</td>
                                             <td>
@@ -55,10 +73,21 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                <a class="btn btn-primary viewTask text-white"
+                                                   data-id="{{ $value->id }}"
+                                                   data-title="{{ $value->title }}"
+                                                   data-description="{{ $value->description }}"
+                                                   data-time-begin="{{ date('H:i d-m-Y', strtotime($value->begin_at)) }}"
+                                                   data-time-finish="{{ date('H:i d-m-Y', strtotime($value->finish_at)) }}"
+                                                   data-pending="{{ \App\Models\Member::STATUS_ACTIVE }}"
+                                                   data-status="{{ $value->status }}"
+                                                >
+                                                    View
+                                                </a>
                                                 @if($value->status == \App\Models\Member::STATUS_ACTIVE)
                                                     <a class="btn btn-success text-white dataClass" data-toggle="modal"
                                                        data-target="#exampleModal" data-whatever="@mdo"
-                                                       data-id="{{ $value->id }}" data-project-id="{{ $id }}">Complete</a>
+                                                       data-id="{{ $value->id }}" data-project-id="{{ $project_id }}">Complete</a>
                                                 @else
                                                     <a class="btn btn-secondary text-white" disabled>Complete</a>
                                                 @endif
@@ -67,6 +96,13 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                <div class="text-center">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            {{ $data->links() }}
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -121,7 +157,37 @@
                 var projectId = $(this).data('project-id');
                 $(".modal-data #TaskId").val(taskId);
                 $(".modal-data #projects").val(projectId);
-            })
+            });
+        });
+        $(document).ready(function() {
+            $('.viewTask').click(function() {
+                var id = $(this).data('id');
+                var title = $(this).data('title');
+                var description = $(this).data('description');
+                var timeBegin = $(this).data('time-begin');
+                var finish = $(this).data('time-finish');
+                var statusPending = $(this).data('pending');
+                var statusTask = $(this).data('status');
+                $("#taskDetail").show();
+                $("html").animate({ scrollTop: 0 }, "slow");
+                if (statusTask === statusPending) {
+                    var status = '<strong class=\'text-danger\'>Pending</strong>';
+                } else {
+                    var status = '<strong class=\'text-success\'>Completed</strong>';
+                };
+                div_str = "<h4>" + title + "</h4>" +
+                    "<div class=\"post clearfix\">" +
+                    "<p> Description: " + "<strong>" + description + "</strong>" + "</p>" +
+                    "<p> Status: " + status + "</p>" +
+                    "<p> Start at: " + "<strong>" + timeBegin + "</strong>" + "</p>" +
+                    "<p> End at: " + "<strong>" + finish + "</strong>" + "</p>" +
+                    "</div>";
+
+                $("#taskDetail #div_task").empty().append(div_str);
+            });
+            $('.closeTask').click(function() {
+                $("#taskDetail").hide();
+            });
         });
     </script>
     <!-- End pass data -->

@@ -32,7 +32,7 @@ Route::middleware(['member'])->group(function () {
  * Route for Members
  */
 Route::middleware(['member'])->group(function () {
-    Route::get('/home', 'Member\SearchController@index')->name('home');
+    Route::get('/home', 'Member\HomeController@index')->name('home');
     Route::resources([
         'profiles' => 'General\ProfileController',
         'projects' => 'Member\ProjectController',
@@ -45,5 +45,5 @@ Route::middleware(['member'])->group(function () {
  * Route for Admin
  */
 Route::middleware(['admin'])->group(function () {
-    Route::get('/admin', 'Admin\SearchController@index')->name('admin');
+    Route::get('/admin', 'Admin\HomeController@index')->name('admin');
 });

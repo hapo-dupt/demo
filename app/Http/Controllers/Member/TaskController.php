@@ -17,8 +17,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $listProject = auth()->user()->projects;
-        return view('members.tasks.index', ['listProject' => $listProject, 'id' => Member::ID]);
+        $taskByProject = auth()->user()->projects()->paginate(config('app.pagination'));
+        return view('members.tasks.index', ['data' => $taskByProject, 'id' => Member::ID]);
     }
 
     /**
@@ -28,8 +28,8 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $listTask = Task::all()->where('project_id', $id)->where('member_id', auth()->user()->id);
-        return view('members.tasks.tasks', ['data' => $listTask, 'id' => $id, 'orderId' => Member::ID]);
+        $listTask = auth()->user()->tasks()->where('project_id', $id)->paginate(config('app.pagination'));
+        return view('members.tasks.tasks', ['data' => $listTask, 'project_id' => $id, 'orderId' => Member::ID]);
     }
 
     /**

@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Ho_Chi_Minh',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -228,5 +228,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    /*
+     * Paginate with 3 units in a page
+     */
+    'pagination' => 5,
 
 ];

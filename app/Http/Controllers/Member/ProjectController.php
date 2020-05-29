@@ -17,7 +17,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $listProject = auth()->user()->projects;
+        $listProject = auth()->user()->projects()->paginate(config('app.pagination'));
         return view('members.projects.projects', ['projects' => $listProject, 'id' => Member::ID]);
     }
 
@@ -30,7 +30,7 @@ class ProjectController extends Controller
     {
         $tasksProject = Project::find($id)->tasks;
         $numberOfTaskFinished = $tasksProject->where('status', '=', Member::STATUS_CLOSE)->count();
-        $projectDetail = Project::all()->where('id', '=', $id);
+        $projectDetail = Project::findorFail($id);
         $customer = Project::find($id)->customers;
         $member = Project::find($id)->members;
         if ($tasksProject && $numberOfTaskFinished != null) {

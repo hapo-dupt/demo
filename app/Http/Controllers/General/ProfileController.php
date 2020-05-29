@@ -30,17 +30,15 @@ class ProfileController extends Controller
      */
     public function store(ProfileRequest $request)
     {
-        $data = request()->except(['_token']);
-        if ($request->password != null) {
+        $data = request()->only(['full_name', 'email', 'gender', 'phone', 'address']);
+        if ($request->password) {
             $data['password'] = bcrypt($request->password);
-        } else {
-            unset($data['password']);
         }
         unset($data['repassword']);
-        if (array_key_exists('image', $data)) {
-            $storageFile = Storage::put('public/images/', $data['image']);
+        if ($request->has('image')) {
+            $storageFile = Storage::put('public/images/', $request->image);
             $data['image'] = basename($storageFile);
-            Storage::delete('public/images/'.auth()->user()->image);
+            Storage::delete('public/images/' . auth()->user()->image);
         }
         Member::findOrFail($request->id)->update($data);
         return redirect()->route('profiles.index')->with('success', trans('message.profile_success'));
