@@ -18,12 +18,32 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
+/**
+ * Route for General Part
+ */
 Route::middleware(['member'])->group(function () {
-    Route::get('/home', 'Member\SearchController@index')->name('home');
+    Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+    Route::match(['post', 'get'], 'search', 'General\SearchController@search')->name('search');
+    Route::get('resultsSearch/{$id}', 'General\SearchController@showTask')->name('redirectSearch');
 });
 
+/**
+ * Route for Members
+ */
+Route::middleware(['member'])->group(function () {
+    Route::get('/home', 'Member\HomeController@index')->name('home');
+    Route::resources([
+        'profiles' => 'General\ProfileController',
+        'projects' => 'Member\ProjectController',
+        'tasks' => 'Member\TaskController',
+        'resultsSearch' => 'General\SearchController'
+    ]);
+});
+
+/**
+ * Route for Admin
+ */
 Route::middleware(['admin'])->group(function () {
-    Route::get('/admin', 'Admin\SearchController@index')->name('admin');
+    Route::get('/admin', 'Admin\HomeController@index')->name('admin');
 });
