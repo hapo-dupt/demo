@@ -29,7 +29,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         $tasksProject = Project::find($id)->tasks;
-        $numberOfTaskFinished = $tasksProject->where('status', '=', Member::STATUS_CLOSE)->count();
+        $numberOfTaskFinished = $tasksProject->where('status', Member::STATUS_CLOSE)->count();
         $projectDetail = Project::findorFail($id);
         $customer = Project::find($id)->customers;
         $member = Project::find($id)->members;
